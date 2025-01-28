@@ -1,41 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/screen/home_screen.dart';
 
 void main() {
+  // flutter 프레임워크가 실행할 준비가 될 때까지 기다린다.
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
       home: HomeScreen(),
-    ),
+    ), // 반드시 이 구조를 지켜주자!
   );
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF335CB0),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 32.0,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'asset/img/logo.png',
-              ),
-              SizedBox(
-                height: 28.0,
-              ),
-              // CircularProgressIndicator(
-              //   color: Colors.white,
-              // ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
