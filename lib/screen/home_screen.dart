@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -8,6 +9,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DateTime selectedDate = DateTime.now();
+
+  void datePickFunc() {
+    showCupertinoDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Align(
+          alignment: Alignment.center,
+          child: Container(
+            color: Colors.white,
+            height: 300.0,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              initialDateTime: selectedDate,
+              maximumDate: DateTime.now(),
+              onDateTimeChanged: (DateTime date) {
+                setState(() {
+                  selectedDate = date;
+                });
+              },
+              dateOrder: DatePickerDateOrder.ymd,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              _Top(),
+              _Top(
+                selectedDate: selectedDate,
+                datePickFunc: datePickFunc,
+              ),
               _Bottom(),
             ],
           ),
@@ -29,10 +62,19 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _Top extends StatelessWidget {
-  const _Top({super.key});
+  final DateTime selectedDate;
+  final VoidCallback? datePickFunc;
+
+  const _Top({
+    super.key,
+    required this.selectedDate,
+    required this.datePickFunc,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+
     return Expanded(
       child: Container(
         child: Column(
@@ -46,19 +88,19 @@ class _Top extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Text(
-              '2024-07-31',
+              '${selectedDate.year}.${selectedDate.month}.${selectedDate.day}',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             IconButton(
               iconSize: 60.0,
               color: Colors.red[600],
-              onPressed: () {},
+              onPressed: datePickFunc,
               icon: Icon(
                 Icons.favorite,
               ),
             ),
             Text(
-              'D+1',
+              'D+${now.difference(selectedDate).inDays + 1}',
               style: Theme.of(context).textTheme.displayMedium,
             ),
           ],
